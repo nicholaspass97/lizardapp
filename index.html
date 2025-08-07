@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lizard Button App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .lizard-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            padding: 20px 40px;
+            font-size: 2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .lizard-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .lizard-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .lizard-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 100px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .lizard-emoji {
+            font-size: 2em;
+            animation: bounce 0.6s ease;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .lizard-emoji:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .counter {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>For My Pookie</h1>
+        <button class="lizard-button" onclick="addLizard()">
+            lizard
+        </button>
+        <div class="counter">
+            Lizards added: <span id="lizard-count">0</span>
+        </div>
+        <div class="lizard-container" id="lizard-container">
+            <!-- Lizards will be added here -->
+        </div>
+    </div>
+
+    <script>
+        let lizardCount = 0;
+        const lizardContainer = document.getElementById('lizard-container');
+        const countDisplay = document.getElementById('lizard-count');
+
+        function addLizard() {
+            // Create new lizard emoji
+            const lizard = document.createElement('div');
+            lizard.className = 'lizard-emoji';
+            lizard.textContent = '🦎';
+            lizard.onclick = function() {
+                this.remove();
+                lizardCount--;
+                updateCount();
+            };
+            
+            lizardContainer.appendChild(lizard);
+            lizardCount++;
+            updateCount();
+            
+            // Play lizard sound
+            playLizardSound();
+        }
+
+        function updateCount() {
+            countDisplay.textContent = lizardCount;
+        }
+
+        function playLizardSound() {
+            // Try to play the custom lizard sound file
+            try {
+                const audio = new Audio('lizard-sound.mp3');
+                audio.volume = 0.7; // Set volume to 70%
+                audio.play().catch(e => {
+                    console.log('Custom audio failed, using fallback sound');
+                    playFallbackSound();
+                });
+            } catch (e) {
+                console.log('Custom audio not found, using fallback sound');
+                playFallbackSound();
+            }
+        }
+
+        function playFallbackSound() {
+            // Fallback to the original generated sound if custom audio fails
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Create a "lizard-like" sound
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+            oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.2);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+
+
+        // Add some initial lizards for fun
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => addLizard(), i * 200);
+        }
+    </script>
+</body>
+</html>

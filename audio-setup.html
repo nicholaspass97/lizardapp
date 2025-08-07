@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lizard Audio Setup</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .instructions {
+            text-align: left;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .step {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            color: #856404;
+        }
+
+        .test-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .file-input {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦎 Lizard Audio Setup 🦎</h1>
+        
+        <div class="instructions">
+            <h3>How to use the YouTube sound clip:</h3>
+            
+            <div class="step">
+                <strong>Step 1:</strong> Download the audio from the YouTube video
+                <br>URL: <a href="https://www.youtube.com/watch?v=wE41R_lJI9A" target="_blank">https://www.youtube.com/watch?v=wE41R_lJI9A</a>
+            </div>
+
+            <div class="step">
+                <strong>Step 2:</strong> Convert to MP3 format (if needed)
+                <br>You can use online converters or tools like yt-dlp
+            </div>
+
+            <div class="step">
+                <strong>Step 3:</strong> Rename the file to "lizard-sound.mp3"
+            </div>
+
+            <div class="step">
+                <strong>Step 4:</strong> Place the file in the same folder as index.html
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Important:</strong> Make sure you have permission to use the audio clip. 
+            For personal use, you can download it using tools like yt-dlp or online YouTube to MP3 converters.
+        </div>
+
+        <h3>Test Your Audio File:</h3>
+        <input type="file" id="audioFile" accept="audio/*" class="file-input">
+        <br>
+        <button class="test-button" onclick="testAudio()">Test Audio</button>
+        <button class="test-button" onclick="window.open('index.html', '_blank')">Open Main App</button>
+    </div>
+
+    <script>
+        function testAudio() {
+            const fileInput = document.getElementById('audioFile');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const audio = new Audio(URL.createObjectURL(file));
+                audio.play().catch(e => {
+                    alert('Error playing audio: ' + e.message);
+                });
+            } else {
+                alert('Please select an audio file first!');
+            }
+        }
+    </script>
+</body>
+</html>
